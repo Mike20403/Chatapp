@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Chatapp",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "Chatapp (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+        },
+        {
+            "name": "Chatapp (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
