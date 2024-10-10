@@ -1,5 +1,4 @@
 import 'package:chatapp/auth/auth_gate.dart';
-import 'package:chatapp/auth/login_or_register.dart';
 import 'package:chatapp/firebase_options.dart';
 import 'package:chatapp/themes/light_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
