@@ -1,3 +1,4 @@
+import 'package:chatapp/auth/auth_service.dart';
 import 'package:chatapp/components/custom_button.dart';
 import 'package:chatapp/components/custom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +14,34 @@ class LoginPage extends StatelessWidget {
   LoginPage({super.key, required this.onTap});
 
   // Login Method
-  void login() {
+  void login(BuildContext context) {
+    // Auth Service
+    final authService = AuthService();
+
     final String email = _emailController.text;
     final String password = _passwordController.text;
 
-    print("Email: $email");
-    print("Password: $password");
+    try {
+      authService.signInWithEmailPassword(email, password);
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Error"),
+            content: Text(e.toString()),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -69,7 +92,7 @@ class LoginPage extends StatelessWidget {
           // Login button
           CustomButton(
             text: "Login",
-            onTap: login,
+            onTap: () => login(context),
           ),
 
           const SizedBox(height: 25),

@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            // Debug
+            "name": "Chatapp Debug",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug"
+        },
+        {
+            // Profile
+            "name": "Chatapp Profile",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            // Release
+            "name": "Chatapp Release",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
