@@ -1,3 +1,4 @@
+import 'package:chatapp/auth/auth_service.dart';
 import 'package:chatapp/components/custom_button.dart';
 import 'package:chatapp/components/custom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +15,56 @@ class RegisterPage extends StatelessWidget {
   RegisterPage({super.key, required this.onTap});
 
   // Register Method
-  void register() {
+  void register(BuildContext context) {
+    // Auth Service
+    final authService = AuthService();
+
     final String email = _emailController.text;
     final String password = _passwordController.text;
     final String confirmpw = _confirmPwController.text;
+
+    // Check if password and confirm password match
+    if (password == confirmpw) {
+      try {
+        authService.signUpWithEmailPassword(email, password);
+      } catch (e) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("Error"),
+              content: Text(e.toString()),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Error"),
+            content: Text("Passwords do not match"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -77,7 +124,7 @@ class RegisterPage extends StatelessWidget {
           // Login button
           CustomButton(
             text: "Register",
-            onTap: register,
+            onTap: () => register(context),
           ),
 
           const SizedBox(height: 25),
