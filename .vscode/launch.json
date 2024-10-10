@@ -4,7 +4,8 @@
         {
             "name": "Chatapp",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "flutterMode": "debug"
         },
         {
             "name": "Chatapp (profile mode)",
