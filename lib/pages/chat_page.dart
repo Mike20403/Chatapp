@@ -1,3 +1,4 @@
+import 'package:chatapp/components/chat_bubble.dart';
 import 'package:chatapp/components/custom_textfield.dart';
 import 'package:chatapp/services/auth/auth_service.dart';
 import 'package:chatapp/services/chat/chat_service.dart';
@@ -51,7 +52,9 @@ class ChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: Text(receiverEmail),
         centerTitle: true,
       ),
@@ -116,47 +119,50 @@ class ChatPage extends StatelessWidget {
 
     // Return message item
     return Container(
-      padding: EdgeInsets.all(8),
       alignment: isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: isCurrentUser
-              ? Theme.of(context).colorScheme.primary
-              : Theme.of(context).colorScheme.secondary,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Text(
-          message,
-          style: TextStyle(
-            color: isCurrentUser
-                ? Theme.of(context).colorScheme.onPrimary
-                : Theme.of(context).colorScheme.onSecondary,
+      child: Column(
+        crossAxisAlignment:
+            isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          // Chat bubble
+          ChatBubble(
+            message: message,
+            isCurrentUser: isCurrentUser,
           ),
-        ),
+        ],
       ),
     );
   }
 
   // Message input
   Widget _buildMessageInput(BuildContext context) {
-    return Row(
-      children: [
-        // Message input
-        Expanded(
-          child: CustomTextfield(
-            controller: _messageController,
-            hintText: "Enter a message",
-            obscureText: false,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 30.0),
+      child: Row(
+        children: [
+          // Message input
+          Expanded(
+            child: CustomTextfield(
+              controller: _messageController,
+              hintText: "Enter a message",
+              obscureText: false,
+            ),
           ),
-        ),
 
-        // Send button
-        IconButton(
-          icon: Icon(Icons.send),
-          onPressed: () => sendMessage(context),
-        ),
-      ],
+          // Send button
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.lightGreen,
+              shape: BoxShape.circle,
+            ),
+            margin: EdgeInsets.only(right: 20),
+            child: IconButton(
+              icon: const Icon(Icons.send),
+              onPressed: () => sendMessage(context),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
