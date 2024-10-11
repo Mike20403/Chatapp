@@ -1,4 +1,4 @@
-import 'package:chatapp/auth/login_or_register.dart';
+import 'package:chatapp/services/auth/login_or_register.dart';
 import 'package:chatapp/pages/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ class AuthGate extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasData) {
-              return const HomePage();
+              return HomePage();
             } else if (snapshot.hasError) {
               return const Center(child: Text("An error occurred"));
             } else {
