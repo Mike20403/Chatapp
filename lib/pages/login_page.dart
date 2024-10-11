@@ -13,6 +13,26 @@ class LoginPage extends StatelessWidget {
 
   LoginPage({super.key, required this.onTap});
 
+  // Validate email and password
+  bool validateEmailAndPassword(String email, String password) {
+    // Check if email and password are not empty
+    if (email.isEmpty || password.isEmpty) {
+      return false;
+    }
+
+    // Check if email is valid
+    if (!email.contains("@") || !email.contains(".")) {
+      return false;
+    }
+
+    // Check if password is at least 6 characters long
+    if (password.length < 6) {
+      return false;
+    }
+
+    return true;
+  }
+
   // Login Method
   void login(BuildContext context) {
     // Auth Service
@@ -20,6 +40,28 @@ class LoginPage extends StatelessWidget {
 
     final String email = _emailController.text;
     final String password = _passwordController.text;
+
+    // Validate email and password
+    if (!validateEmailAndPassword(email, password)) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Error"),
+            content: Text("Please enter a valid email and password"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
 
     try {
       authService.signInWithEmailPassword(email, password);
