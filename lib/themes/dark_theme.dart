@@ -9,7 +9,7 @@ ThemeData darkTheme = ThemeData(
     inversePrimary: Colors.grey.shade900,
   ),
   appBarTheme: AppBarTheme(
-    backgroundColor: Colors.grey.shade900,
-    foregroundColor: Colors.transparent,
+    foregroundColor: Colors.white,
+    backgroundColor: Colors.transparent,
   ),
 );
