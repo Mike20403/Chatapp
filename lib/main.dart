@@ -10,7 +10,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(ChangeNotifierProvider(
     create: (context) => ThemeProvider(),
-    child: const MyApp(),
+    child: MyApp(),
   ));
 }
 
