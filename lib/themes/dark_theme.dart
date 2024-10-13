@@ -8,4 +8,8 @@ ThemeData darkTheme = ThemeData(
     tertiary: Colors.green.shade800,
     inversePrimary: Colors.grey.shade900,
   ),
+  appBarTheme: AppBarTheme(
+    backgroundColor: Colors.grey.shade900,
+    foregroundColor: Colors.transparent,
+  ),
 );

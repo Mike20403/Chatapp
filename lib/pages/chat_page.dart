@@ -53,8 +53,6 @@ class ChatPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(receiverEmail),
         centerTitle: true,

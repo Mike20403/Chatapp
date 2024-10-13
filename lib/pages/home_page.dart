@@ -17,8 +17,6 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.transparent,
         title: Text("Home"),
         centerTitle: true,
         elevation: 0,
