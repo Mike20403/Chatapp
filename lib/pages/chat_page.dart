@@ -5,16 +5,21 @@ import 'package:chatapp/services/chat/chat_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   final String receiverEmail;
   final String receiverID;
 
-  ChatPage({
+  const ChatPage({
     super.key,
     required this.receiverEmail,
     required this.receiverID,
   });
 
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
   // Text controller
   final TextEditingController _messageController = TextEditingController();
 
@@ -22,15 +27,63 @@ class ChatPage extends StatelessWidget {
   final ChatService _chatService = ChatService();
   final AuthService _authService = AuthService();
 
+  // Textfield focus node
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Add listener to focus node
+    _focusNode.addListener(() {
+      if (_focusNode.hasFocus) {
+        // Delay and then scroll to the bottom
+        Future.delayed(
+          const Duration(milliseconds: 500),
+          () => _scrollToBottom(),
+        );
+      }
+    });
+
+    // Wait for the widget to build and then scroll to the bottom
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      () => _scrollToBottom(),
+    );
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the focus node
+    _focusNode.dispose();
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  // Scroll Controller
+  final ScrollController _scrollController = ScrollController();
+
+  void _scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
   // Send message
   void sendMessage(BuildContext context) async {
     // If there is text in the message controller
     if (_messageController.text.isNotEmpty) {
       // Send message
-      await _chatService.sendMessage(receiverID, _messageController.text);
+      await _chatService.sendMessage(
+          widget.receiverID, _messageController.text);
 
       // Clear message controller
       _messageController.clear();
+
+      // Scroll to the bottom
+      _scrollToBottom();
     }
 
     // If there is no text in the message controller
@@ -54,7 +107,7 @@ class ChatPage extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         elevation: 0,
-        title: Text(receiverEmail),
+        title: Text(widget.receiverEmail),
         centerTitle: true,
       ),
       body: Column(
@@ -73,7 +126,7 @@ class ChatPage extends StatelessWidget {
   Widget _buildMessageList(BuildContext context) {
     String senderID = _authService.getCurrentUser()!.uid;
     return StreamBuilder(
-      stream: _chatService.getMessages(receiverID, senderID),
+      stream: _chatService.getMessages(widget.receiverID, senderID),
       builder: (context, snapshot) {
         // Check for errors
         if (snapshot.hasError) {
@@ -91,6 +144,7 @@ class ChatPage extends StatelessWidget {
 
         // Return listview of messages
         return ListView(
+          controller: _scrollController,
           children: snapshot.data!.docs
               .map((doc) => _buildMessageItem(doc, context))
               .toList(),
@@ -145,6 +199,7 @@ class ChatPage extends StatelessWidget {
               controller: _messageController,
               hintText: "Enter a message",
               obscureText: false,
+              focusNode: _focusNode,
             ),
           ),
 
